@@ -1,0 +1,73 @@
+{
+  "name": "Actions",
+  "version": "0.4.0",
+  "owner": "DWH (action declaration authority) / WebEngine (runtime binding)",
+  "purpose": "consume canonical DWH action declarations and bind presented user intent to external domain action execution",
+  "owns": [
+    "runtime binding from presented controls to projected action references",
+    "listener lifecycle and invocation orchestration"
+  ],
+  "record": {
+    "fields": [
+      "id",
+      "label",
+      "action"
+    ],
+    "actionGrammar": "DOMAIN:ACTION",
+    "rules": [
+      "id is presentation/action identity, not domain execution behavior",
+      "label is canonical action presentation text",
+      "action is the external domain action reference"
+    ]
+  },
+  "runtimeApi": [
+    "actionIdToDwhSymbol(domain, id)",
+    "loadActionDeclaration(options)",
+    "parseActionRef(action)",
+    "validateActionRecord(record)",
+    "freezeActionRecord(record)",
+    "createActionRegistry()",
+    "executeAction(record, executor, options)",
+    "bindActionControl(control, record, executor, options)"
+  ],
+  "binding": {
+    "executor": "external function supplied by the owning domain/integration layer",
+    "WebEngineRole": "bind user intent and presentation metadata to the external action reference",
+    "mustNot": [
+      "implement domain business behavior",
+      "infer authorization from control visibility or disabled state",
+      "turn Navigation into Actions or Actions into Navigation"
+    ]
+  },
+  "rules": [
+    "action declarations are canonical DWH data",
+    "Actions are not Content or Navigation",
+    "WebEngine binds user intent but does not own domain business behavior",
+    "action execution belongs to the owning domain service",
+    "authorization for an action/resource is decided by AccessCore",
+    "presentation visibility is not a security boundary",
+    "binding cleanup removes only the listener owned by that binding",
+    "executor failure does not mutate canonical DWH action data"
+  ],
+  "authority": {
+    "DWH": [
+      "action identity",
+      "action label/presentation metadata",
+      "domain action reference declaration",
+      "action placement relations"
+    ],
+    "WebEngine": [
+      "runtime validation",
+      "control binding",
+      "executor invocation orchestration"
+    ]
+  },
+  "dwhProjection": {
+    "symbolGrammar": "#ACTION:<DOMAIN>:<ID>",
+    "consumerApi": [
+      "actionIdToDwhSymbol(domain, id)",
+      "loadActionDeclaration({ dwh, domain, id, context })"
+    ],
+    "rule": "canonical action declaration is loaded from DWH; WebEngine only binds/executes through an external domain executor"
+  }
+}

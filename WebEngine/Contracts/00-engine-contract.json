@@ -1,0 +1,83 @@
+{
+  "name": "WebEngine",
+  "version": "0.8.0",
+  "kind": "shared browser execution runtime",
+  "runtime": "browser",
+  "canonicalPublicEntry": "/lib/webengine/webengine.js",
+  "dependsOn": [
+    "DWH for canonical website declarations and projections",
+    "IAM for identity context",
+    "AccessCore for authorization decisions",
+    "WebGUI where DOM/UI primitives are required",
+    "S3D where spatial/3D primitives are required"
+  ],
+  "owns": [
+    "DWH projection consumption and validation",
+    "runtime page/context construction",
+    "projector execution orchestration",
+    "renderer module loading and lifecycle",
+    "runtime Content provider execution",
+    "runtime SiteTree indexing and exact lookup from #SITE",
+    "runtime Navigation derivation from SiteTree",
+    "runtime Action binding and executor invocation",
+    "composition instance execution",
+    "DOM/WebGUI/S3D orchestration",
+    "shared shell runtime",
+    "IAM identity adapter integration",
+    "AccessCore decision adapter integration",
+    "relocatable instance-root projection for physical runtime resources",
+    "WebEngine runtime/presentation semantics under the .we-* namespace"
+  ],
+  "principles": [
+    "one canonical authority per concern",
+    "DWH owns declarative website structure and WebEngine executes it",
+    "WebEngine consumes semantic DWH symbols and projections rather than storage internals",
+    "runtime derivations and lifecycle state never become canonical DWH authority",
+    "IAM identity is consumed without turning identity into authorization",
+    "AccessCore decisions are consumed without embedding authorization policy in WebEngine",
+    "WebGUI remains independent generic DOM/UI primitives",
+    "S3D remains independent generic spatial/3D primitives",
+    "domain behavior remains in the owning domain",
+    "logical site identity is independent of temporary deployment prefixes",
+    "renderer execution is isolated and lifecycle-managed"
+  ],
+  "mustNot": [
+    "contain domain business logic",
+    "become DWH declaration authority",
+    "query DWH storage tables or infer DWH relations from storage layout",
+    "author a second SiteTree, Content graph, projector graph, route graph, composition graph or action graph",
+    "authenticate users",
+    "be an authorization authority",
+    "interpret IAM management tier as application authorization",
+    "reimplement WebGUI DOM primitives",
+    "reimplement S3D spatial primitives",
+    "own visual styling",
+    "treat runtime visibility or DOM state as authorization",
+    "hardcode temporary deployment prefixes into canonical identities",
+    "silently invent fallback canonical declarations when dependencies fail"
+  ],
+  "responsibility": "execute canonical web declarations",
+  "doesNotOwn": [
+    "canonical site hierarchy",
+    "canonical content identity or content relations",
+    "canonical projector definitions or projector placement",
+    "canonical renderer bindings",
+    "canonical route declarations",
+    "canonical composition graph",
+    "canonical action declarations",
+    "identity or authentication",
+    "authorization policy",
+    "domain business behavior",
+    "generic UI primitives",
+    "spatial/3D primitives",
+    "visual styling"
+  ],
+  "systemSplit": {
+    "IAM": "who",
+    "AccessCore": "authority / may",
+    "DWH": "where / what relates to what",
+    "WebEngine": "execute declared web structure",
+    "WebGUI": "generic UI primitives",
+    "S3D": "spatial / 3D primitives"
+  }
+}

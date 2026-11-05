@@ -1,0 +1,73 @@
+{
+  "name": "SiteTree",
+  "version": "0.6.0",
+  "owner": "WebEngine",
+  "kind": "DWH SiteTree projection consumer mechanism",
+  "canonicalSource": {
+    "authority": "DWH",
+    "symbol": "#SITE",
+    "derivedFrom": "nanoCMSStructure recursive Page + placements under #WEB"
+  },
+  "purpose": "consume the DWH #SITE projection, validate it and expose deterministic SiteTree runtime lookup and derived projection mechanisms",
+  "ownership": {
+    "DWH": [
+      "canonical website entities and relations",
+      "ordering",
+      "the #SITE projection contract and projection result"
+    ],
+    "WebEngine": [
+      "#SITE consumer adapter boundary",
+      "SiteTree projection validation",
+      "immutable runtime index",
+      "exact node resolution",
+      "derived navigation/site projection mechanisms"
+    ]
+  },
+  "nodeShape": [
+    "id",
+    "label",
+    "path",
+    "children"
+  ],
+  "nodeSemantics": {
+    "id": "canonical SiteTree node identity supplied by #SITE",
+    "label": "canonical public label supplied by #SITE",
+    "path": "optional globally unique logical public path supplied by #SITE",
+    "children": "ordered projected child nodes supplied by #SITE"
+  },
+  "loader": {
+    "defaultSymbol": "#SITE",
+    "input": "DWH adapter implementing project(symbol, context)",
+    "failure": "DWH adapter, envelope or SiteTree validation failure rejects; no file fallback or invented hierarchy",
+    "http": {
+      "adapter": "createHttpDwhAdapter({ endpoint })",
+      "testEndpoint": "/test/app/dwh/api/project.php",
+      "productionEndpoint": "/app/dwh/api/project.php",
+      "request": "POST { symbol: '#SITE', context }"
+    }
+  },
+  "derivedProjections": [
+    "global navigation",
+    "local/topic navigation",
+    "breadcrumbs",
+    "sitemap",
+    "current section",
+    "active navigation state",
+    "public site path resolution"
+  ],
+  "rules": [
+    "DWH is the canonical authority for relations from which #SITE is projected",
+    "#SITE is the SiteTree runtime identity",
+    "site.json is not a canonical SiteTree authority",
+    "JSON may be a transport serialization but does not define identity",
+    "WebEngine validates #SITE output before creating the immutable SiteTree runtime snapshot",
+    "Navigation, breadcrumbs and sitemap are derived from the validated SiteTree snapshot",
+    "WebEngine does not infer DWH relations or inspect DWH storage internals",
+    "public means exposed or addressable and does not imply anonymous access",
+    "API and service routing remain separate machine-interface concerns",
+    "SiteTree must not infer authorization from hierarchy, paths or visibility",
+    "SiteTree node paths remain logical root paths and do not embed the active deployment prefix",
+    "HTTP transport is replaceable consumer plumbing and does not become SiteTree authority",
+    "#SITE and #WEB must derive from one nanoCMS structure authority rather than separate hierarchy stores"
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "name": "Content",
+  "version": "0.4.0",
+  "owner": "DWH (content identity/bindings) / WebEngine (runtime presentation resolution)",
+  "identity": [
+    "domain",
+    "id"
+  ],
+  "fields": [
+    "id",
+    "domain",
+    "type",
+    "provider",
+    "content"
+  ],
+  "types": [
+    "text",
+    "image",
+    "svg",
+    "video",
+    "embed",
+    "file"
+  ],
+  "semantics": {
+    "id": "canonical content identifier within a domain",
+    "domain": "content ownership namespace",
+    "type": "how the resolved content resource is presented",
+    "provider": "resolver namespace describing where or through which resolver the resource is obtained",
+    "content": "inline payload or provider-relative resource identifier"
+  },
+  "validation": [
+    "a Content record contains only id, domain, type, provider and content",
+    "id, domain and provider use [A-Za-z0-9][A-Za-z0-9_-]* identifiers",
+    "type is one of the canonical Content types",
+    "content is a string",
+    "validation does not infer navigation, action, layout or domain semantics"
+  ],
+  "providerModel": {
+    "registry": "providers are explicitly registered by provider id",
+    "resolution": "provider receives a frozen canonical Content record and optional caller context",
+    "authority": "provider resolves source location/value only; it does not redefine Content type semantics",
+    "unknownProvider": "resolution fails closed",
+    "duplicateProvider": "registration fails instead of silently replacing an existing resolver"
+  },
+  "providerRules": [
+    "provider is not limited to external services",
+    "provider may resolve to an asset namespace or directory",
+    "embed providers such as youtube are handled by provider-specific resolvers",
+    "asset/embed provider resource identifiers are relative to their provider namespace",
+    "absolute filesystem paths, absolute resource URLs in canonical content identifiers, backslash paths and parent/current-directory traversal are forbidden",
+    "embed providers return structured descriptors and never authoritative HTML or iframe payloads",
+    "resolved asset/embed URLs exposed by WebEngine must be root-relative or use http(s); javascript:, data:, file:, blob: and protocol-relative URLs are rejected"
+  ],
+  "resolvedTypes": {
+    "text": {
+      "shape": "id, domain, type=text, text"
+    },
+    "image": {
+      "shape": "id, domain, type=image, url"
+    },
+    "svg": {
+      "shape": "id, domain, type=svg, url"
+    },
+    "video": {
+      "shape": "id, domain, type=video, url"
+    },
+    "file": {
+      "shape": "id, domain, type=file, url"
+    },
+    "embed": {
+      "shape": "id, domain, type=embed, provider, resource, url, optional title",
+      "rule": "embed resolution remains structured data; arbitrary HTML is not accepted as authority"
+    }
+  },
+  "typeSemantics": {
+    "text": "textual content resource",
+    "image": "raster image resource",
+    "svg": "SVG resource",
+    "video": "video resource",
+    "embed": "provider-resolved external embedded resource",
+    "file": "generic file resource"
+  },
+  "runtimeHelpers": [
+    "contentIdToDwhSymbol(domain, id)",
+    "loadContentDeclaration(options)",
+    "validateContentRecord(record)",
+    "freezeContentRecord(record)",
+    "createContentProviderRegistry()",
+    "assertResolvedUrl(value)",
+    "createInlineTextProvider()",
+    "createAssetProvider(baseUrl)",
+    "createEmbedProvider(resolveResource)",
+    "resolveContent(record, registry, context)"
+  ],
+  "rules": [
+    "canonical Content identity and relations are DWH authority",
+    "WebEngine consumes projected Content records and does not become persistence or relation authority",
+    "Content is page/site content only",
+    "Content does not own navigation hierarchy or action execution",
+    "type describes presentation semantics; provider describes runtime source resolution",
+    "resolved Content descriptors are runtime presentation inputs and never source authority",
+    "provider failure does not cause WebEngine to invent canonical fallback content"
+  ],
+  "authority": {
+    "DWH": [
+      "content identity",
+      "content declarative data",
+      "content-to-page/section/projector relations",
+      "provider/source binding declarations"
+    ],
+    "WebEngine": [
+      "content projection validation",
+      "provider adapter execution",
+      "presentation descriptor normalization"
+    ]
+  },
+  "dwhProjection": {
+    "symbolGrammar": "#CONTENT:<DOMAIN>:<ID>",
+    "consumerApi": [
+      "contentIdToDwhSymbol(domain, id)",
+      "loadContentDeclaration({ dwh, domain, id, context })"
+    ],
+    "rule": "canonical declaration is loaded from DWH before provider/runtime resolution; WebEngine has no file fallback"
+  }
+}
