@@ -1,0 +1,11 @@
+{
+  "entry": "webgui.js",
+  "rootJavaScriptFiles": ["webgui.js"],
+  "exports": ["WEBGUI_VERSION", "WebGUI", "createWebGUI", "resolveTheme"],
+  "rules": [
+    "consumers import only the root entry point",
+    "the root entry point owns internal JavaScript dependency assembly",
+    "internal modules use named ES module exports",
+    "no compatibility aliases or global namespace mutation"
+  ]
+}

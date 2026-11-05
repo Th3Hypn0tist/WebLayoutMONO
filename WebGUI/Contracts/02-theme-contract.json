@@ -1,0 +1,17 @@
+{
+  "builtInDirectory": "themes",
+  "default": "default",
+  "acceptedParameter": "built-in name | path | URL | null",
+  "resolution": {
+    "builtInName": "resolved from WebGUI/themes relative to webgui.js",
+    "path": "resolved as a consumer-owned external stylesheet",
+    "URL": "used unchanged",
+    "null": "no theme stylesheet is installed"
+  },
+  "rules": [
+    "built-in themes remain in the WebGUI repository",
+    "consumer themes may live anywhere in the consuming project",
+    "theme selection is per WebGUI instance",
+    "changing a theme replaces only the stylesheet link owned by that instance"
+  ]
+}
