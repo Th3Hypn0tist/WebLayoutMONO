@@ -1,0 +1,222 @@
+import {
+  WEBENGINE_DEPLOY_MARKER,
+  INSTANCE_ROOT_PATH,
+  normalizeInstanceRoot,
+  deriveInstanceRootPath,
+  resolveInstancePath,
+  stripInstanceRoot,
+} from './core/instance-root.js';
+
+import {
+  parseProjectorId,
+  projectorIdToDwhSymbol,
+} from './core/projector-id.js';
+
+import {
+  SITE_TREE_SYMBOL,
+  parseSiteTree,
+  validateSiteTree,
+  createSiteTreeIndex,
+  resolveSiteNodeById,
+  resolveSiteNodeByPath,
+  loadSiteTree,
+} from './core/site-tree.js';
+
+import {
+  DWH_SYMBOL_PATTERN,
+  assertDwhSymbol,
+  normalizeDwhProjectionEnvelope,
+  createDwhAdapter,
+  createHttpDwhAdapter,
+  projectDwhSymbol,
+} from './core/dwh.js';
+
+import {
+  METAMODULE_CATALOG_SYMBOL,
+  IDENTITY_STATUSES,
+  STRUCTURE_STATUSES,
+  EVENT_STATUSES,
+  validateMetaModuleCatalog,
+  loadMetaModuleCatalog,
+} from './core/metamodule-catalog.js';
+
+import {
+  projectGlobalNavigation,
+  projectLocalNavigation,
+  projectBreadcrumbs,
+  projectSitemap,
+  resolveCurrentSection,
+  projectActiveNavigationState,
+} from './core/site-tree-projections.js';
+
+import {
+  CONTENT_TYPES,
+  validateContentRecord,
+  freezeContentRecord,
+  assertProviderRelativeResource,
+  assertResolvedUrl,
+  createContentProviderRegistry,
+  createInlineTextProvider,
+  createAssetProvider,
+  createEmbedProvider,
+  contentIdToDwhSymbol,
+  loadContentDeclaration,
+  resolveContent,
+} from './core/content.js';
+
+import {
+  validateDeclarativeValue,
+  validateProjectorProjection,
+  deepFreezeDeclarative,
+  createProjectorResolutionContext,
+  resolveProjector,
+} from './core/projector-resolver.js';
+
+import {
+  validateRendererModuleUrl,
+  resolveRendererModuleUrl,
+  loadRendererModule,
+  normalizeMountResult,
+  mountResolvedProjector,
+  denyRendererBoundary,
+  errorRendererBoundary,
+  destroyRendererBoundary,
+} from './core/renderer.js';
+
+import {
+  parseActionRef,
+  validateActionRecord,
+  freezeActionRecord,
+  createActionRegistry,
+  actionIdToDwhSymbol,
+  loadActionDeclaration,
+  executeAction,
+  bindActionControl,
+} from './core/actions.js';
+
+import {
+  WEB_SYMBOL,
+  validateWebPageProjection,
+  freezeWebPageProjection,
+  loadWebPage,
+  composeWebPage,
+  createPageContext,
+  createWebEngineShell,
+  createProjectorSlot,
+  mountProjectorSlot,
+  composeProjector,
+  destroyWebEngineComposition,
+} from './core/composition.js';
+
+import {
+  IAM_IDENTITY_ENDPOINT,
+  normalizeIAMIdentityPayload,
+  createAnonymousIAMIdentityContext,
+  loadIAMIdentityContext,
+} from './core/identity.js';
+
+import {
+  ACCESS_DECISIONS,
+  projectIAMAccessSubject,
+  normalizeAccessCoreDecisionRequest,
+  createAccessCoreRequest,
+  normalizeAccessCoreDecision,
+  createAccessCoreAdapter,
+  checkAccess,
+  preflightProjectorAccess,
+} from './core/access.js';
+
+const WEBENGINE_VERSION = '0.16.0';
+
+export {
+  WEBENGINE_VERSION,
+  WEBENGINE_DEPLOY_MARKER,
+  INSTANCE_ROOT_PATH,
+  normalizeInstanceRoot,
+  deriveInstanceRootPath,
+  resolveInstancePath,
+  stripInstanceRoot,
+  parseProjectorId,
+  projectorIdToDwhSymbol,
+  SITE_TREE_SYMBOL,
+  parseSiteTree,
+  validateSiteTree,
+  createSiteTreeIndex,
+  resolveSiteNodeById,
+  resolveSiteNodeByPath,
+  loadSiteTree,
+  DWH_SYMBOL_PATTERN,
+  assertDwhSymbol,
+  normalizeDwhProjectionEnvelope,
+  createDwhAdapter,
+  createHttpDwhAdapter,
+  projectDwhSymbol,
+  METAMODULE_CATALOG_SYMBOL,
+  IDENTITY_STATUSES,
+  STRUCTURE_STATUSES,
+  EVENT_STATUSES,
+  validateMetaModuleCatalog,
+  loadMetaModuleCatalog,
+  projectGlobalNavigation,
+  projectLocalNavigation,
+  projectBreadcrumbs,
+  projectSitemap,
+  resolveCurrentSection,
+  projectActiveNavigationState,
+  CONTENT_TYPES,
+  validateContentRecord,
+  freezeContentRecord,
+  assertProviderRelativeResource,
+  assertResolvedUrl,
+  createContentProviderRegistry,
+  createInlineTextProvider,
+  createAssetProvider,
+  createEmbedProvider,
+  contentIdToDwhSymbol,
+  loadContentDeclaration,
+  resolveContent,
+  validateDeclarativeValue,
+  validateProjectorProjection,
+  deepFreezeDeclarative,
+  createProjectorResolutionContext,
+  resolveProjector,
+  validateRendererModuleUrl,
+  resolveRendererModuleUrl,
+  loadRendererModule,
+  normalizeMountResult,
+  mountResolvedProjector,
+  denyRendererBoundary,
+  errorRendererBoundary,
+  destroyRendererBoundary,
+  parseActionRef,
+  validateActionRecord,
+  freezeActionRecord,
+  createActionRegistry,
+  actionIdToDwhSymbol,
+  loadActionDeclaration,
+  executeAction,
+  bindActionControl,
+  WEB_SYMBOL,
+  validateWebPageProjection,
+  freezeWebPageProjection,
+  loadWebPage,
+  composeWebPage,
+  createPageContext,
+  createWebEngineShell,
+  createProjectorSlot,
+  mountProjectorSlot,
+  composeProjector,
+  destroyWebEngineComposition,
+  IAM_IDENTITY_ENDPOINT,
+  normalizeIAMIdentityPayload,
+  createAnonymousIAMIdentityContext,
+  loadIAMIdentityContext,
+  ACCESS_DECISIONS,
+  projectIAMAccessSubject,
+  normalizeAccessCoreDecisionRequest,
+  createAccessCoreRequest,
+  normalizeAccessCoreDecision,
+  createAccessCoreAdapter,
+  checkAccess,
+  preflightProjectorAccess,
+};
