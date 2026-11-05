@@ -1,0 +1,303 @@
+:root {
+  color-scheme: dark;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #05090c;
+  color: #e5f3f9;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; min-height: 100%; }
+
+body {
+  min-height: 100vh;
+  background: #05090c;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  min-height: 52px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #173748;
+  background: rgba(8, 17, 25, .96);
+  backdrop-filter: blur(10px);
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
+h1 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+
+#status {
+  color: #658fa9;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+#selection-summary {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #90b7d1;
+  font-size: 12px;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  gap: 6px;
+}
+
+button {
+  border: 1px solid #436983;
+  border-radius: 5px;
+  padding: 6px 9px;
+  background: #0f222e;
+  color: #e5f3f9;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) { border-color: #d88351; }
+button:disabled { opacity: .35; cursor: default; }
+
+#workspace {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  overflow: hidden;
+}
+
+.svg-document {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  height: var(--websvg-stage-height, calc(100vh - 76px));
+  border: 1px solid #173748;
+  border-radius: 7px;
+  background: #05090c;
+  overflow: hidden;
+}
+
+.svg-document[hidden] { display: none; }
+
+.svg-host {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.svg-controls {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 20;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid #274e63;
+  border-radius: 6px;
+  background: rgba(8, 17, 25, .88);
+  backdrop-filter: blur(8px);
+}
+
+.svg-controls button {
+  min-width: 30px;
+  padding: 5px 7px;
+  font-size: 10px;
+}
+
+.websvg-document-svg.is-panning {
+  cursor: grabbing !important;
+}
+
+.websvg-document-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.websvg-interactive { cursor: pointer; }
+
+.svg-host [data-websvg-highlight="primary"] {
+  filter:
+    drop-shadow(0 0 2px rgba(255,255,255,1))
+    drop-shadow(0 0 8px rgba(0,229,255,1))
+    drop-shadow(0 0 16px rgba(0,229,255,.95));
+}
+
+.svg-host [data-websvg-highlight="relation"] {
+  filter:
+    drop-shadow(0 0 3px rgba(255,179,71,1))
+    drop-shadow(0 0 10px rgba(255,111,0,.95));
+}
+
+.svg-host [data-websvg-highlight="related"] {
+  filter:
+    drop-shadow(0 0 3px rgba(67,183,255,.95))
+    drop-shadow(0 0 8px rgba(67,183,255,.75));
+}
+
+.svg-host [data-websvg-highlight="primary"] rect,
+.svg-host [data-websvg-highlight="primary"] path,
+.svg-host [data-websvg-highlight="primary"] line,
+.svg-host [data-websvg-highlight="primary"] polygon {
+  stroke: #00e5ff !important;
+  stroke-width: 3.2px !important;
+}
+
+.svg-host [data-websvg-highlight="relation"] rect,
+.svg-host [data-websvg-highlight="relation"] path,
+.svg-host [data-websvg-highlight="relation"] line,
+.svg-host [data-websvg-highlight="relation"] polygon {
+  stroke: #ff8a00 !important;
+  stroke-width: 2.6px !important;
+}
+
+.svg-host [data-websvg-highlight="related"] rect,
+.svg-host [data-websvg-highlight="related"] path,
+.svg-host [data-websvg-highlight="related"] line,
+.svg-host [data-websvg-highlight="related"] polygon {
+  stroke: #43b7ff !important;
+  stroke-width: 2px !important;
+}
+
+.error {
+  margin: 0;
+  padding: 20px;
+  color: #ffb4ab;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 760px) {
+  .topbar {
+    grid-template-columns: 1fr auto;
+    gap: 6px 10px;
+  }
+
+  #selection-summary {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    text-align: left;
+  }
+
+  .actions {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  #workspace { padding: 6px; gap: 6px; }
+}
+
+
+/* Matrix projection gutter */
+.matrix-label-view {
+  --matrix-gutter: 118px;
+  isolation: isolate;
+}
+
+.matrix-label-view .svg-host {
+  position: absolute;
+  left: var(--matrix-gutter);
+  top: 0;
+  width: calc(100% - var(--matrix-gutter));
+  height: 100%;
+}
+
+.matrix-label-source .u {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.matrix-label-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--matrix-gutter);
+  z-index: 15;
+  pointer-events: none;
+  overflow: hidden;
+  background: #05090c;
+  border-right: 1px solid #274e63;
+}
+
+.matrix-label-universal-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.matrix-pinned-label {
+  position: absolute;
+  left: 4px;
+  max-width: calc(var(--matrix-gutter) - 8px);
+  margin: 0;
+  border: 0;
+  border-radius: 4px;
+  padding: 2px 5px;
+  background: rgba(5, 9, 12, .96);
+  color: #e5f3f9;
+  line-height: 1.05;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: auto;
+  transform: translateY(-50%);
+  font-weight: 700;
+}
+
+.matrix-pinned-label:hover {
+  color: #ffffff;
+  background: #0f222e;
+}
+
+.matrix-pinned-label[data-websvg-highlight="primary"] {
+  color: #05090c;
+  background: #dffcff;
+  text-shadow: none;
+}
+
+.matrix-pinned-label[data-websvg-highlight="related"] {
+  color: #8fd8ff;
+}
+
+.matrix-pinned-label[data-websvg-highlight="relation"] {
+  color: #ffb347;
+}
+
+/* Bright matrix selection */
+.svg-host .matrix-cell[data-websvg-highlight="primary"] .cell-active,
+.svg-host .matrix-cell[data-websvg-group-highlight="primary"] .cell-active {
+  fill: #dffcff !important;
+  fill-opacity: 1 !important;
+  stroke: #00e5ff !important;
+  stroke-width: 1.8px !important;
+}
+
+.svg-host .matrix-cell[data-websvg-highlight="primary"] .cell,
+.svg-host .matrix-cell[data-websvg-group-highlight="primary"] .cell {
+  fill: #05090c !important;
+}
