@@ -1,0 +1,12 @@
+{
+  "name": "@th3hypn0tist/webgui",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./webgui.js",
+    "./themes/*": "./themes/*"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}
