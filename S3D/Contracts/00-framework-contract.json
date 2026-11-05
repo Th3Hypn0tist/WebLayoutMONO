@@ -1,0 +1,33 @@
+{
+  "name": "S3D",
+  "version": "0.7.0",
+  "kind": "standalone structural 3D framework",
+  "runtime": "browser",
+  "principles": [
+    "structural 3D is the primary framework purpose",
+    "all stateful functionality is instantiable",
+    "no application singleton state",
+    "core is host-independent",
+    "no dependency on DWH, IAM, AccessCore or WebEngine application semantics",
+    "reusable domain concepts are allowed",
+    "domain modules are first-class framework modules, not extras",
+    "rendering backends do not own host-domain meaning"
+  ],
+  "responsibility": "spatial / 3D primitives",
+  "systemSplit": {
+    "IAM": "who",
+    "AccessCore": "authority / may",
+    "DWH": "where / what relates to what",
+    "WebEngine": "execute declared web structure",
+    "WebGUI": "generic UI primitives",
+    "S3D": "spatial / 3D primitives"
+  },
+  "mustNot": [
+    "consume DWH symbols or canonical website relations directly",
+    "interpret IAM identity",
+    "make AccessCore authorization decisions",
+    "own WebEngine page/composition semantics",
+    "contain host-application business logic",
+    "make host runtime state canonical authority"
+  ]
+}

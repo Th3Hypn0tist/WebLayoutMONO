@@ -1,0 +1,15 @@
+{
+  "admissionRules": [
+    "a stateful module is independently instantiable",
+    "a module exposes explicit inputs, outputs, operations and lifecycle",
+    "a module contains no hidden host application state",
+    "a domain module is usable without the application that first required it",
+    "metadata remains opaque unless the module contract explicitly defines it"
+  ],
+  "lifecycle": ["construct", "configure", "use", "destroy"],
+  "mustNot": [
+    "register mutable browser globals",
+    "import consumer application modules",
+    "change core behavior through monkey patching"
+  ]
+}

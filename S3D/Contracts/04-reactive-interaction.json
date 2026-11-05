@@ -1,0 +1,21 @@
+{
+  "module": "ReactiveInteraction",
+  "scope": "S3D/core + domains",
+  "rules": [
+    "draggable objects emit position changes continuously during pointer movement",
+    "generic drag interaction can move objects horizontally or vertically",
+    "3D picking uses the object position rather than a fixed floor-plane projection",
+    "consumers can invalidate dependent calculations on every position change",
+    "reactive views recompute at most once per animation frame",
+    "pointer release is not required before a dependent visualization updates",
+    "preview resolution may be reduced during interaction if full-quality output is restored after interaction",
+    "drag behavior is implemented generically in core and domain objects opt in through instances",
+    "TransformGizmoController is a generic core interaction and contains no application or domain semantics",
+    "transform gizmos have an explicit global enabled state and perform no selection or transformation while disabled",
+    "clicking an unselected gizmo candidate selects it in position mode",
+    "clicking the already selected candidate without dragging toggles position and rotate modes",
+    "position and rotation may be adapted by candidate-provided gizmo getter and setter hooks",
+    "SceneObject rotation is explicit transform state and rotated Box primitives must render that state",
+    "domains may constrain transforms through adapters rather than duplicating the transform controller"
+  ]
+}

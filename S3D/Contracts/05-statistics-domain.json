@@ -1,0 +1,24 @@
+{
+  "path": "domains/statistics",
+  "purpose": "reusable statistical structures and spatial visualizations",
+  "allowed": [
+    "statistical terminology",
+    "numeric dimensions and domains",
+    "observations and distributions",
+    "descriptive statistics",
+    "range selections",
+    "metric-space projection",
+    "dimension-to-visual-channel encoding for position rotation scale and color",
+    "spatial point-cloud visualization",
+    "packed typed instance buffers for high-density visualization",
+    "consumer-provided metadata without interpreting application semantics"
+  ],
+  "mustNot": [
+    "depend on a consuming application",
+    "encode model, benchmark, LMTS or other consumer-specific semantics",
+    "own consuming application project state",
+    "reconstruct or invent missing consumer data",
+    "create one SceneObject or one renderer submission per observation for high-density point clouds",
+    "introduce a dependency from core back to statistics"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "layers": {
+    "core": "domain-independent structural runtime, objects, math and rendering",
+    "domains": "reusable instantiable implementations organized by domain",
+    "host": "application instances, project state, WebEngine orchestration where used, wiring and host-specific workflows"
+  },
+  "allowedDependencies": [
+    "domains/* -> core",
+    "host -> core",
+    "host -> domains/*",
+    "WebEngine host integration -> S3D core/domains when spatial presentation is required"
+  ],
+  "forbiddenDependencies": [
+    "core -> domains/*",
+    "core -> host",
+    "domains/* -> host",
+    "S3D -> WebEngine application semantics",
+    "S3D -> DWH",
+    "S3D -> IAM",
+    "S3D -> AccessCore"
+  ],
+  "invariants": [
+    "core never imports a domain module",
+    "domain modules remain independently importable",
+    "domain terminology is allowed when implementation is reusable outside its originating application",
+    "host-provided data does not transfer canonical application authority into S3D"
+  ]
+}

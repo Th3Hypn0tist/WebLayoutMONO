@@ -1,0 +1,21 @@
+{
+  "path": "domains/acoustics",
+  "purpose": "reusable instantiable acoustic structures and visualizations",
+  "allowed": [
+    "acoustic terminology",
+    "frequency controls",
+    "acoustic field visualization",
+    "room and measurement visualization",
+    "speaker visualization",
+    "continuously draggable speaker nodes",
+    "reactive sampled acoustic field views",
+    "transparent orthogonal field slices with per-axis slice counts and a shared value range",
+    "reusable acoustic computation when its contract is host-independent"
+  ],
+  "mustNot": [
+    "depend on a consuming application",
+    "own consuming application project state",
+    "encode a consumer-specific workflow",
+    "introduce a dependency from core back to acoustics"
+  ]
+}

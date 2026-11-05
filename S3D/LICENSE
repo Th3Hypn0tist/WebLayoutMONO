@@ -1,0 +1,99 @@
+S3D PROPRIETARY SOURCE-AVAILABLE LICENSE
+Version 1.0 — 2026
+
+Copyright (c) 2026 Th3Hypn0tist. All rights reserved.
+
+1. Purpose
+
+S3D (the "Software") is made publicly viewable for inspection, evaluation,
+discussion, and demonstration purposes. Publication of the source code does
+not make the Software open source and does not grant permission to use the
+Software in another product, application, service, library, framework, or
+system.
+
+2. Limited Evaluation Permission
+
+You may view the source code and may make temporary or local copies only as
+reasonably necessary to inspect, evaluate, test, or discuss the Software for
+non-production purposes.
+
+This limited permission does not include a right to deploy, publish, provide,
+operate, or incorporate the Software as part of another software product or
+service.
+
+3. Prohibited Uses
+
+Unless you have received a separate written license from the Licensor, you may
+not, in whole or in part:
+
+(a) use the Software in production, commercial, organizational, or internal
+    operational systems;
+(b) copy, modify, adapt, translate, port, merge, embed, integrate, or otherwise
+    incorporate the Software or its source code into another software product,
+    application, library, framework, service, device, or system;
+(c) create or distribute derivative works based on the Software or substantial
+    portions of its source code;
+(d) redistribute, sublicense, sell, rent, lease, host, expose as a service, or
+    otherwise make the Software available to third parties as a software
+    component or runtime;
+(e) remove or alter copyright, licensing, attribution, or proprietary notices;
+(f) represent the Software, or a modified version of it, as being licensed
+    under an open-source or permissive software license; or
+(g) use the Software as the implementation basis for functionality in your own
+    software where doing so requires copying, adapting, translating, porting,
+    or deriving from S3D source code.
+
+4. No Implied License
+
+No rights are granted by implication, estoppel, or otherwise. Except for the
+limited evaluation permission in Section 2, all rights in the Software are
+reserved by the Licensor.
+
+No license is granted under any patent, trademark, trade secret, or other
+intellectual-property right except as expressly stated in a separate written
+agreement.
+
+5. Separate Licensing
+
+If you want to use, implement, integrate, embed, modify, distribute, or deploy
+S3D as part of your own software, product, service, project, or organization,
+you must obtain a separate written license from the Licensor before doing so.
+
+For licensing inquiries, contact the S3D repository owner through the official
+repository or associated GitHub profile:
+
+https://github.com/Th3Hypn0tist/S3D
+
+Commercial, OEM, embedded, internal-use, redistribution, and other licensing
+terms may be negotiated separately.
+
+6. Contributions
+
+No right to contribute, merge, or redistribute modifications is granted by
+this license. Contributions accepted by the Licensor may be subject to
+separate contribution terms.
+
+7. Termination
+
+Any permission granted by this license terminates automatically if you breach
+its terms. Upon termination, you must stop using the Software and delete copies
+made under the evaluation permission, except where retention is required by
+law.
+
+8. Disclaimer of Warranty
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT.
+
+9. Limitation of Liability
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE LICENSOR SHALL NOT BE
+LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM OR RELATED TO
+THE SOFTWARE OR ITS USE, EVALUATION, OR INABILITY TO USE IT.
+
+10. Entire License
+
+This document governs the publicly available copy of S3D unless a separate
+written license agreement between the Licensor and a licensee expressly
+supersedes it.
