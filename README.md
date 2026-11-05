@@ -62,7 +62,7 @@ WebLayoutMONO/
 └── README.md
 ```
 
-**Migration status:** This repository is currently an **architecture and documentation bootstrap**. The five package folders are **target destinations, not a claim that their implementations have been migrated**. Do not replace working standalone repositories with placeholders, and do not deploy packages from this monorepo until their contents and boundaries have been migrated and verified.
+**Migration status:** The five package directories now contain **byte-for-byte source snapshots** of the existing standalone repositories (including their contracts, demos, tests and existing license files). The original repositories remain untouched. **This is an import, not a completed architectural refactor:** current cross-cutting concerns (notably WebEngine browser/DOM composition and WebSVG semantic projection logic) still require separation. Do not treat these snapshots as validated, release-ready replacements for the upstream deployments.
 
 Current upstream implementations:
 
@@ -76,7 +76,7 @@ Current upstream implementations:
 
 1. **Inventory:** distinguish generic primitives, engine behavior, semantic projection logic and domain-specific code before copying anything.
 2. **Clean boundaries:** remove current cross-library assumptions, especially DOM/site-specific concerns from WebEngine core and semantic projection behavior from WebSVG.
-3. **Move code, not duplicate implementations:** migrate each library's own source, contracts, tests and assets under its package directory, retaining provenance and licensing.
+3. **Consolidate ownership:** the initial sources are now copied into independent package directories; continue development in one chosen source of truth per package, then retire legacy repository update paths only after explicit cutover. Preserve provenance and licensing.
 4. **Prove independence:** run each package's own build and tests with every sibling package absent; reject forbidden cross-package imports.
 5. **Publish independently:** packages receive independent versions, changelogs and releases; consuming applications choose versions explicitly.
 6. **Resume Structure integration:** only after the libraries provide stable, application-neutral interfaces. Structure's working migration branch remains separate.
