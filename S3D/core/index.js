@@ -1,0 +1,155 @@
+// Public S3D module surface.
+// Internal modules expose named exports only; this file assembles the optional
+// convenience namespace without mutating globals or internal module state.
+import { S3D_VERSION, Scene, Selection, Playback, normalizePlaybackBoundaries } from './core.js';
+import { Vec3, Mat4 } from './math.js';
+import { Renderer } from './renderer.js';
+import {
+  BOX_FACE_COLOR_OFFSET,
+  BOX_FACE_COLOR_STRIDE,
+  BOX_INSTANCE_KINDS,
+  BOX_INSTANCE_STRIDE,
+  BOX_INSTANCE_TRANSFORM_STRIDE,
+  FloatStore,
+  RenderStore,
+  boxInstanceHasTransparency,
+  writeBoxFaceInstance,
+  writeBoxInstance,
+} from './render_store.js';
+import { BOX_VERTICES, BOX_FACES, BOX_FACE_ORDER, BOX_FACE_INDICES, BOX_EDGE_INDICES, boxFaceIndex } from './box_geometry.js';
+import { GlyphAtlas, WebGLBatchRenderer } from './webgl_batch_renderer.js';
+import { WebGLImageRenderer } from './webgl_image_renderer.js';
+import { PerspectiveCamera } from './camera.js';
+import { Viewport, viewportForCanvas } from './viewport.js';
+import { OrbitControls } from './interaction/orbit-controls.js';
+import { PlaneDragController } from './interaction/plane-drag-controller.js';
+import { TransformGizmoController } from './interaction/transform-gizmo-controller.js';
+import { SceneObject, Group } from './objects/object.js';
+import { Primitive, Box, Point, Cylinder } from './objects/primitives.js';
+import { Anchor } from './objects/anchors.js';
+import { Link } from './objects/links.js';
+import { PropsItem } from './objects/props_item.js';
+import { Props } from './objects/props.js';
+import { EventItem } from './objects/event_item.js';
+import { Events } from './objects/events.js';
+import { Pulse } from './objects/pulse.js';
+import { Highlight } from './objects/highlight.js';
+import { ImageReferenceLayer } from './geometry/image-reference-layer.js';
+import { PolygonEditor, polygonEdges } from './geometry/polygon-editor.js';
+import { Measurement, resolveAnchor } from './geometry/measurement.js';
+import { ConstraintGeometrySolver, residuals } from './geometry/constraint-geometry-solver.js';
+import { ExtrudedVolume } from './geometry/extruded-volume.js';
+
+const S3D = Object.freeze({
+  version: S3D_VERSION,
+  Scene,
+  Selection,
+  Playback,
+  normalizePlaybackBoundaries,
+  Vec3,
+  Mat4,
+  Renderer,
+  FloatStore,
+  RenderStore,
+  BOX_INSTANCE_KINDS,
+  BOX_INSTANCE_STRIDE,
+  BOX_INSTANCE_TRANSFORM_STRIDE,
+  BOX_FACE_COLOR_OFFSET,
+  BOX_FACE_COLOR_STRIDE,
+  writeBoxInstance,
+  writeBoxFaceInstance,
+  boxInstanceHasTransparency,
+  BOX_VERTICES,
+  BOX_FACES,
+  BOX_FACE_ORDER,
+  BOX_FACE_INDICES,
+  BOX_EDGE_INDICES,
+  boxFaceIndex,
+  GlyphAtlas,
+  WebGLBatchRenderer,
+  WebGLImageRenderer,
+  PerspectiveCamera,
+  Viewport,
+  viewportForCanvas,
+  OrbitControls,
+  PlaneDragController,
+  TransformGizmoController,
+  SceneObject,
+  Group,
+  Primitive,
+  Box,
+  Point,
+  Cylinder,
+  Anchor,
+  Link,
+  PropsItem,
+  Props,
+  EventItem,
+  Events,
+  Pulse,
+  Highlight,
+  ImageReferenceLayer,
+  PolygonEditor,
+  Measurement,
+  ConstraintGeometrySolver,
+  ExtrudedVolume,
+});
+
+export {
+  S3D,
+  S3D_VERSION,
+  Scene,
+  Selection,
+  Playback,
+  normalizePlaybackBoundaries,
+  Vec3,
+  Mat4,
+  Renderer,
+  FloatStore,
+  RenderStore,
+  BOX_INSTANCE_KINDS,
+  BOX_INSTANCE_STRIDE,
+  BOX_INSTANCE_TRANSFORM_STRIDE,
+  BOX_FACE_COLOR_OFFSET,
+  BOX_FACE_COLOR_STRIDE,
+  writeBoxInstance,
+  writeBoxFaceInstance,
+  boxInstanceHasTransparency,
+  BOX_VERTICES,
+  BOX_FACES,
+  BOX_FACE_ORDER,
+  BOX_FACE_INDICES,
+  BOX_EDGE_INDICES,
+  boxFaceIndex,
+  GlyphAtlas,
+  WebGLBatchRenderer,
+  WebGLImageRenderer,
+  PerspectiveCamera,
+  Viewport,
+  viewportForCanvas,
+  OrbitControls,
+  PlaneDragController,
+  TransformGizmoController,
+  SceneObject,
+  Group,
+  Primitive,
+  Box,
+  Point,
+  Cylinder,
+  Anchor,
+  Link,
+  PropsItem,
+  Props,
+  EventItem,
+  Events,
+  Pulse,
+  Highlight,
+  ImageReferenceLayer,
+  PolygonEditor,
+  polygonEdges,
+  Measurement,
+  resolveAnchor,
+  ConstraintGeometrySolver,
+  residuals,
+  ExtrudedVolume,
+};
