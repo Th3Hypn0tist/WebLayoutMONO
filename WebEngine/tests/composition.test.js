@@ -1,0 +1,460 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+
+import {
+  createSiteTreeIndex,
+  createDwhAdapter,
+  WEB_SYMBOL,
+  validateWebPageProjection,
+  loadWebPage,
+  composeWebPage,
+  createPageContext,
+  createWebEngineShell,
+  createProjectorSlot,
+  mountProjectorSlot,
+  composeProjector,
+  destroyWebEngineComposition,
+} from '../webengine.js';
+
+function createDocument() {
+  const document = {
+    createElement(tagName) {
+      const classes = new Set();
+      const attributes = new Map();
+      const listeners = new Map();
+
+      return {
+        tagName: tagName.toUpperCase(),
+        ownerDocument: document,
+        children: [],
+        dataset: {},
+        className: '',
+        textContent: '',
+        href: '',
+        classList: {
+          add(value) { classes.add(value); },
+          contains(value) { return classes.has(value); },
+        },
+        append(...nodes) {
+          this.children.push(...nodes);
+        },
+        replaceChildren(...nodes) {
+          this.children = nodes;
+        },
+        setAttribute(name, value) {
+          attributes.set(name, String(value));
+        },
+        getAttribute(name) {
+          return attributes.get(name) ?? null;
+        },
+        addEventListener(type, handler) {
+          listeners.set(type, handler);
+        },
+        removeEventListener(type, handler) {
+          if (listeners.get(type) === handler) listeners.delete(type);
+        },
+      };
+    },
+  };
+
+  return document;
+}
+
+function tree() {
+  return createSiteTreeIndex({
+    id: 'aigm',
+    label: 'AIGM',
+    children: [
+      {
+        id: 'aigmos',
+        label: 'AIGMos',
+        path: '/aigmos/',
+        children: [
+          {
+            id: 'expose',
+            label: 'Expose',
+            path: '/aigmos/expose/',
+          },
+        ],
+      },
+      {
+        id: 'lmts',
+        label: 'LMTS',
+        path: '/lmts/',
+        children: [
+          {
+            id: 'ranking',
+            label: 'Ranking',
+            path: '/lmts/ranking/',
+          },
+        ],
+      },
+    ],
+  });
+}
+
+function resolved(
+  id = 'LMTS:ranking',
+  projection = { title: 'Ranking' },
+) {
+  return Object.freeze({
+    id,
+    renderer: '/app/lmts/renderers/ranking.js',
+    projection: Object.freeze({ ...projection }),
+  });
+}
+
+test('creates immutable page context from SiteTree projections', () => {
+  const context = createPageContext(tree(), '/aigmos/expose/');
+
+  assert.equal(context.currentNode.id, 'expose');
+  assert.equal(context.currentSection.id, 'aigmos');
+  assert.deepEqual(
+    context.breadcrumbs.map(item => item.id),
+    ['aigm', 'aigmos', 'expose'],
+  );
+  assert.deepEqual(context.activeNavigation, {
+    currentId: 'expose',
+    ancestorIds: ['aigm', 'aigmos'],
+  });
+  assert.ok(Object.isFrozen(context));
+  assert.ok(Object.isFrozen(context.currentNode));
+});
+
+test('shell emits only canonical WebEngine structural presentation classes', () => {
+  const document = createDocument();
+  const shell = createWebEngineShell({
+    document,
+    siteTree: tree(),
+    currentPath: '/lmts/',
+    title: 'LMTS',
+  });
+
+  assert.ok(shell.root.classList.contains('we-shell'));
+  assert.ok(shell.header.classList.contains('we-header'));
+  assert.ok(shell.main.classList.contains('we-main'));
+  assert.ok(shell.page.classList.contains('we-page'));
+  assert.ok(shell.globalNavigation.classList.contains('we-nav'));
+
+  const lmtsLink = shell.globalNavigation.children[1];
+  assert.ok(lmtsLink.classList.contains('we-nav-item'));
+  assert.equal(lmtsLink.href, '/lmts/');
+  assert.equal(lmtsLink.getAttribute('aria-current'), 'page');
+
+  const nested = createWebEngineShell({
+    document,
+    siteTree: tree(),
+    currentPath: '/aigmos/expose/',
+  });
+  assert.equal(nested.breadcrumbs.children[0].tagName, 'SPAN');
+  assert.equal(nested.breadcrumbs.children[0].href, '');
+  assert.equal(nested.breadcrumbs.children.at(-1).getAttribute('aria-current'), 'page');
+});
+
+test('projector slot keeps heading outside renderer-owned live boundary', () => {
+  const document = createDocument();
+  const shell = createWebEngineShell({
+    document,
+    siteTree: tree(),
+    currentPath: '/lmts/',
+  });
+
+  const slot = createProjectorSlot(shell, resolved(), {
+    title: 'Ranking',
+  });
+
+  assert.ok(slot.section.classList.contains('we-section'));
+  assert.ok(slot.header.classList.contains('we-projector-header'));
+  assert.ok(slot.boundary.classList.contains('we-projector'));
+  assert.equal(slot.section.children[0], slot.header);
+  assert.equal(slot.section.children[1], slot.boundary);
+});
+
+test('mountProjectorSlot delegates lifecycle to renderer runtime', async () => {
+  const document = createDocument();
+  const shell = createWebEngineShell({
+    document,
+    siteTree: tree(),
+    currentPath: '/lmts/',
+  });
+  const projector = resolved();
+  const slot = createProjectorSlot(shell, projector);
+
+  const result = await mountProjectorSlot(
+    slot,
+    projector,
+    {},
+    {
+      importModule: async () => ({
+        mount(target, projection) {
+          target.textContent = projection.title;
+        },
+      }),
+    },
+  );
+
+  assert.equal(result.state, 'ready');
+  assert.equal(slot.boundary.dataset.state, 'ready');
+  assert.equal(slot.boundary.children[0].textContent, 'Ranking');
+});
+
+test('projector slot refuses a different resolved projector identity', async () => {
+  const document = createDocument();
+  const shell = createWebEngineShell({
+    document,
+    siteTree: tree(),
+    currentPath: '/lmts/',
+  });
+  const slot = createProjectorSlot(shell, resolved());
+
+  await assert.rejects(
+    mountProjectorSlot(
+      slot,
+      resolved('LMTS:systems'),
+      {},
+      {
+        importModule: async () => ({ mount() {} }),
+      },
+    ),
+    /projector slot id mismatch/,
+  );
+});
+
+test('composeProjector isolates one projector failure into its own slot result', async () => {
+  const document = createDocument();
+  const shell = createWebEngineShell({
+    document,
+    siteTree: tree(),
+    currentPath: '/lmts/',
+  });
+
+  const composed = await composeProjector(
+    shell,
+    resolved(),
+    {},
+    {
+      importModule: async () => ({
+        mount() {
+          throw new Error('projector failed');
+        },
+      }),
+    },
+  );
+
+  assert.equal(composed.slot.boundary.dataset.state, 'error');
+  assert.equal(composed.error.message, 'projector failed');
+});
+
+test('destroyWebEngineComposition tears down all registered projector slots', async () => {
+  const document = createDocument();
+  const shell = createWebEngineShell({
+    document,
+    siteTree: tree(),
+    currentPath: '/lmts/',
+  });
+
+  let destroys = 0;
+
+  for (const id of ['LMTS:ranking', 'LMTS:systems']) {
+    const projector = resolved(id);
+    const slot = createProjectorSlot(shell, projector);
+
+    await mountProjectorSlot(
+      slot,
+      projector,
+      {},
+      {
+        importModule: async () => ({
+          mount() {
+            return {
+              destroy() {
+                destroys += 1;
+              },
+            };
+          },
+        }),
+      },
+    );
+  }
+
+  const results = await destroyWebEngineComposition(shell);
+
+  assert.equal(results.length, 2);
+  assert.equal(destroys, 2);
+  assert.deepEqual(shell.root.children, []);
+  assert.throws(
+    () => createProjectorSlot(shell, resolved()),
+    /has been destroyed/,
+  );
+});
+
+
+test('shell strips instance root for SiteTree lookup and restores it for links', () => {
+  const document = createDocument();
+
+  const shell = createWebEngineShell({
+    document,
+    siteTree: tree(),
+    currentPath: '/test/lmts/',
+    instanceRoot: '/test/',
+    title: 'LMTS',
+  });
+
+  assert.equal(shell.pageContext.currentPath, '/lmts/');
+  assert.equal(shell.pageContext.currentNode.id, 'lmts');
+  assert.equal(shell.globalNavigation.children[1].href, '/test/lmts/');
+});
+
+
+function mmdemoTree() {
+  return createSiteTreeIndex({
+    id: 'aigm',
+    label: 'AIGM.fi',
+    path: '/',
+    children: [
+      {
+        id: 'mmdemo',
+        label: 'MetaModule Demo',
+        path: '/mmdemo/',
+        children: [],
+      },
+    ],
+  });
+}
+
+function mmdemoWebProjection() {
+  return {
+    page: {
+      id: 'mmdemo',
+      title: 'MMDemo Industries Oy',
+      menuitem: 'MetaModule Demo',
+      description: 'Browsable MetaModule demo',
+    },
+    children: [],
+    placements: [
+      {
+        id: 'mmdemo.browser',
+        kind: 'projector',
+        order: 10,
+        ref: 'MMDemo:browser',
+        title: null,
+      },
+    ],
+  };
+}
+
+test('validates canonical #WEB resolved Page + placements projection', () => {
+  const value = mmdemoWebProjection();
+  assert.equal(validateWebPageProjection(value), true);
+
+  const bad = mmdemoWebProjection();
+  bad.placements[0].kind = 'invented';
+  assert.throws(
+    () => validateWebPageProjection(bad),
+    /unsupported #WEB placement kind/,
+  );
+});
+
+test('loads #WEB by logical path through the DWH adapter', async () => {
+  const calls = [];
+  const dwh = createDwhAdapter({
+    project: async (symbol, context) => {
+      calls.push({ symbol, context });
+      return {
+        symbol,
+        data: mmdemoWebProjection(),
+        revision: 'web-r1',
+      };
+    },
+  });
+
+  const result = await loadWebPage({
+    dwh,
+    path: '/mmdemo/',
+    context: { locale: 'fi' },
+  });
+
+  assert.equal(WEB_SYMBOL, '#WEB');
+  assert.equal(result.data.page.id, 'mmdemo');
+  assert.equal(result.revision, 'web-r1');
+  assert.deepEqual(calls, [{
+    symbol: '#WEB',
+    context: {
+      locale: 'fi',
+      path: '/mmdemo/',
+    },
+  }]);
+});
+
+test('composes a DWH-declared #WEB Page end-to-end under a relocatable instance root', async () => {
+  const document = createDocument();
+  const calls = [];
+
+  const dwh = createDwhAdapter({
+    project: async (symbol, context) => {
+      calls.push({ symbol, context });
+
+      if (symbol === '#WEB') {
+        return {
+          symbol,
+          data: mmdemoWebProjection(),
+          revision: 'web-r1',
+        };
+      }
+
+      if (symbol === '#PROJECTOR:MMDemo:browser') {
+        return {
+          symbol,
+          data: {
+            renderer: '/app/mmdemo/renderers/browser.js',
+            projection: {
+              heading: 'MetaModule Browser',
+            },
+          },
+          revision: 'projector-r1',
+        };
+      }
+
+      throw new Error(`unexpected symbol: ${symbol}`);
+    },
+  });
+
+  const result = await composeWebPage({
+    document,
+    dwh,
+    siteTree: mmdemoTree(),
+    currentPath: '/test/mmdemo/',
+    instanceRoot: '/test/',
+    dwhContext: {
+      locale: 'fi',
+    },
+    rendererOptions: {
+      importModule: async url => {
+        assert.equal(url, '/test/app/mmdemo/renderers/browser.js');
+
+        return {
+          mount(target, projection, context) {
+            target.textContent = projection.heading;
+            assert.equal(context.page.id, 'mmdemo');
+            assert.equal(context.placement.id, 'mmdemo.browser');
+          },
+        };
+      },
+    },
+  });
+
+  assert.equal(result.pageProjection.data.page.id, 'mmdemo');
+  assert.equal(result.composition.pageContext.currentPath, '/mmdemo/');
+  assert.equal(result.composition.titleNode.textContent, 'MMDemo Industries Oy');
+  assert.equal(result.placements.length, 1);
+  assert.equal(
+    result.placements[0].result.slot.boundary.children[0].textContent,
+    'MetaModule Browser',
+  );
+
+  assert.equal(calls[0].symbol, '#WEB');
+  assert.equal(calls[0].context.path, '/mmdemo/');
+  assert.equal(calls[1].symbol, '#PROJECTOR:MMDemo:browser');
+  assert.equal(calls[1].context.page, '/mmdemo/');
+  assert.equal(calls[1].context.placement, 'mmdemo.browser');
+});
