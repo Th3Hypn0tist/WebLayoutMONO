@@ -1,0 +1,321 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WebSVG Manifest",
+  "type": "object",
+  "required": [
+    "schema",
+    "document_set",
+    "documents",
+    "representation",
+    "bindings",
+    "relations"
+  ],
+  "properties": {
+    "schema": {
+      "const": "websvg/0.3"
+    },
+    "document_set": {
+      "type": "string",
+      "minLength": 1
+    },
+    "documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "file"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "file": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "type": "string"
+          },
+          "projection_type": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "representation": {
+      "type": "object",
+      "required": [
+        "identity_attribute"
+      ],
+      "properties": {
+        "identity_attribute": {
+          "type": "string",
+          "const": "data-websvg-id"
+        },
+        "local_value_attributes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "representation_ref"
+        ],
+        "properties": {
+          "representation_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "semantic_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "relation_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "oneOf": [
+          {
+            "required": [
+              "semantic_ref"
+            ]
+          },
+          {
+            "required": [
+              "relation_ref"
+            ]
+          }
+        ],
+        "additionalProperties": true
+      }
+    },
+    "relations": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/relation"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/relation"
+            }
+          }
+        }
+      ]
+    },
+    "structure": {
+      "type": "object",
+      "required": [
+        "bridge",
+        "role",
+        "semantic_authority",
+        "representation_authority",
+        "identity_bridge",
+        "round_trip"
+      ],
+      "properties": {
+        "bridge": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "enum": [
+            "projection_surface",
+            "edit_surface",
+            "projection_and_edit_surface"
+          ]
+        },
+        "semantic_authority": {
+          "enum": [
+            "manifest",
+            "cw_when_present"
+          ]
+        },
+        "representation_authority": {
+          "const": "svg"
+        },
+        "identity_bridge": {
+          "const": "semantic_ref"
+        },
+        "structure_repository": {
+          "type": "string",
+          "minLength": 1
+        },
+        "round_trip": {
+          "type": "object",
+          "required": [
+            "svg_to_structure",
+            "structure_to_svg"
+          ],
+          "properties": {
+            "svg_to_structure": {
+              "enum": [
+                "derive",
+                "import",
+                "disabled"
+              ]
+            },
+            "structure_to_svg": {
+              "enum": [
+                "project",
+                "export",
+                "disabled"
+              ]
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "projection_types": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "family",
+          "axes",
+          "editor"
+        ],
+        "properties": {
+          "family": {
+            "type": "string",
+            "minLength": 1
+          },
+          "axes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "content_selector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "chrome_selector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pin_sources": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "edge"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "edge": {
+                  "enum": [
+                    "top",
+                    "right",
+                    "bottom",
+                    "left"
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "editor": {
+            "type": "object",
+            "properties": {
+              "selectable": {
+                "type": "boolean"
+              },
+              "movable": {
+                "type": "boolean"
+              },
+              "resizable": {
+                "type": "boolean"
+              },
+              "linkable": {
+                "type": "boolean"
+              },
+              "groupable": {
+                "type": "boolean"
+              },
+              "reorderable": {
+                "type": "boolean"
+              },
+              "editable_text": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": true
+          },
+          "focus_selector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fit_padding": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "$defs": {
+    "relation": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "from",
+        "to"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "from": {
+          "type": "string",
+          "minLength": 1
+        },
+        "to": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

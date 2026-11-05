@@ -1,0 +1,346 @@
+{
+  "schema": "websvg/0.3",
+  "document_set": "mmdemo",
+  "title": "MMDemo WebSVG demo",
+  "description": "SVG owns representation identities and local visual values. JSON owns semantic binding and relation rules.",
+  "documents": [
+    {
+      "id": "mmdemo.process.timelines",
+      "file": "mmdemo_process_timelines.svg",
+      "type": "role-timelines",
+      "projection_type": "timeline"
+    },
+    {
+      "id": "mmdemo.step-universal.matrix",
+      "file": "mmdemo_step_universal_matrix.svg",
+      "type": "step-universal-matrix",
+      "projection_type": "matrix"
+    }
+  ],
+  "representation": {
+    "identity_attribute": "data-websvg-id",
+    "local_value_attributes": [
+      "data-mode",
+      "data-slot"
+    ]
+  },
+  "bindings": [],
+  "binding_rules": [
+    {
+      "kind": "role",
+      "representation_prefixes": [
+        "rep:timeline-role:",
+        "rep:matrix-role:"
+      ],
+      "semantic_prefix": "role:"
+    },
+    {
+      "kind": "step",
+      "representation_prefixes": [
+        "rep:timeline-step:",
+        "rep:matrix-step:"
+      ],
+      "semantic_prefix": "step:"
+    },
+    {
+      "kind": "universal",
+      "representation_prefixes": [
+        "rep:matrix-universal:"
+      ],
+      "semantic_prefix": "universal:"
+    }
+  ],
+  "relation_rules": [
+    {
+      "type": "sequence",
+      "representation_prefix": "rep:sequence:",
+      "separator": ":",
+      "from_semantic_prefix": "step:",
+      "to_semantic_prefix": "step:"
+    },
+    {
+      "type": "handoff",
+      "representation_prefix": "rep:handoff:",
+      "separator": ":",
+      "from_semantic_prefix": "step:",
+      "to_semantic_prefix": "step:"
+    },
+    {
+      "type": "step_universal",
+      "representation_prefix": "rep:matrix-cell:",
+      "separator": ":",
+      "from_semantic_prefix": "step:",
+      "to_semantic_prefix": "universal:",
+      "mode_attribute": "data-mode"
+    }
+  ],
+  "relation_binding_rules": [
+    {
+      "relation_type": "sequence",
+      "representation_template": "rep:sequence:{from}:{to}",
+      "from_prefix": "step:",
+      "to_prefix": "step:"
+    },
+    {
+      "relation_type": "handoff",
+      "representation_template": "rep:handoff:{from}:{to}",
+      "from_prefix": "step:",
+      "to_prefix": "step:"
+    },
+    {
+      "relation_type": "step_universal",
+      "representation_template": "rep:matrix-cell:{from}:{to}",
+      "from_prefix": "step:",
+      "to_prefix": "universal:"
+    }
+  ],
+  "relations": [],
+  "structure": {
+    "bridge": "websvg-structure/0.1",
+    "role": "projection_and_edit_surface",
+    "semantic_authority": "cw_when_present",
+    "representation_authority": "svg",
+    "identity_bridge": "semantic_ref",
+    "structure_repository": "Th3Hypn0tist/Structure",
+    "round_trip": {
+      "svg_to_structure": "derive",
+      "structure_to_svg": "project"
+    }
+  },
+  "projection_types": {
+    "matrix": {
+      "family": "matrix",
+      "axes": [
+        "column",
+        "row"
+      ],
+      "content_selector": "[data-websvg-view=\"content-bounds\"]",
+      "chrome_selector": "[data-websvg-view=\"chrome\"]",
+      "pin_sources": [
+        {
+          "name": "left",
+          "edge": "left"
+        }
+      ],
+      "editor": {
+        "selectable": true,
+        "movable": true,
+        "resizable": false,
+        "linkable": true,
+        "groupable": true,
+        "reorderable": true,
+        "editable_text": true
+      },
+      "focus_selector": ".matrix-cell",
+      "fit_padding": 0
+    },
+    "timeline": {
+      "family": "timeline",
+      "axes": [
+        "time",
+        "lane"
+      ],
+      "content_selector": "[data-websvg-view=\"content\"]",
+      "chrome_selector": "[data-websvg-view=\"chrome\"]",
+      "pin_sources": [
+        {
+          "name": "left-role",
+          "edge": "left"
+        },
+        {
+          "name": "top-slot",
+          "edge": "top"
+        }
+      ],
+      "editor": {
+        "selectable": true,
+        "movable": true,
+        "resizable": true,
+        "linkable": true,
+        "groupable": true,
+        "reorderable": true,
+        "editable_text": true
+      },
+      "focus_selector": ".process-step, .intra, .handoff",
+      "fit_padding": 12
+    },
+    "flowchart": {
+      "family": "graph",
+      "axes": [],
+      "editor": {
+        "selectable": true,
+        "movable": true,
+        "resizable": true,
+        "linkable": true,
+        "groupable": true,
+        "reorderable": false,
+        "editable_text": true
+      }
+    },
+    "swimlane": {
+      "family": "process",
+      "axes": [
+        "lane",
+        "flow"
+      ],
+      "editor": {
+        "selectable": true,
+        "movable": true,
+        "resizable": true,
+        "linkable": true,
+        "groupable": true,
+        "reorderable": true,
+        "editable_text": true
+      }
+    },
+    "state_machine": {
+      "family": "graph",
+      "axes": [],
+      "editor": {
+        "selectable": true,
+        "movable": true,
+        "resizable": true,
+        "linkable": true,
+        "groupable": true,
+        "reorderable": false,
+        "editable_text": true
+      }
+    },
+    "sequence_diagram": {
+      "family": "interaction",
+      "axes": [
+        "participant",
+        "time"
+      ],
+      "editor": {
+        "selectable": true,
+        "movable": true,
+        "resizable": false,
+        "linkable": true,
+        "groupable": true,
+        "reorderable": true,
+        "editable_text": true
+      }
+    },
+    "dependency_graph": {
+      "family": "graph",
+      "axes": [],
+      "editor": {
+        "selectable": true,
+        "movable": true,
+        "resizable": true,
+        "linkable": true,
+        "groupable": true,
+        "reorderable": false,
+        "editable_text": true
+      }
+    },
+    "hierarchy_tree": {
+      "family": "tree",
+      "axes": [
+        "depth",
+        "order"
+      ],
+      "editor": {
+        "selectable": true,
+        "movable": true,
+        "resizable": true,
+        "linkable": true,
+        "groupable": true,
+        "reorderable": true,
+        "editable_text": true
+      }
+    },
+    "gantt": {
+      "family": "schedule",
+      "axes": [
+        "time",
+        "lane"
+      ],
+      "editor": {
+        "selectable": true,
+        "movable": true,
+        "resizable": true,
+        "linkable": true,
+        "groupable": true,
+        "reorderable": true,
+        "editable_text": true
+      }
+    },
+    "event_chain": {
+      "family": "event",
+      "axes": [
+        "flow"
+      ],
+      "editor": {
+        "selectable": true,
+        "movable": true,
+        "resizable": true,
+        "linkable": true,
+        "groupable": true,
+        "reorderable": true,
+        "editable_text": true
+      }
+    },
+    "value_stream": {
+      "family": "process",
+      "axes": [
+        "flow",
+        "stage"
+      ],
+      "editor": {
+        "selectable": true,
+        "movable": true,
+        "resizable": true,
+        "linkable": true,
+        "groupable": true,
+        "reorderable": true,
+        "editable_text": true
+      }
+    },
+    "data_flow": {
+      "family": "graph",
+      "axes": [],
+      "editor": {
+        "selectable": true,
+        "movable": true,
+        "resizable": true,
+        "linkable": true,
+        "groupable": true,
+        "reorderable": false,
+        "editable_text": true
+      }
+    },
+    "process_map": {
+      "family": "process",
+      "axes": [
+        "flow"
+      ],
+      "editor": {
+        "selectable": true,
+        "movable": true,
+        "resizable": true,
+        "linkable": true,
+        "groupable": true,
+        "reorderable": true,
+        "editable_text": true
+      }
+    },
+    "decision_tree": {
+      "family": "tree",
+      "axes": [
+        "depth",
+        "branch"
+      ],
+      "editor": {
+        "selectable": true,
+        "movable": true,
+        "resizable": true,
+        "linkable": true,
+        "groupable": true,
+        "reorderable": true,
+        "editable_text": true
+      }
+    }
+  }
+}
