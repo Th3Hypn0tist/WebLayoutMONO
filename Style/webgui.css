@@ -1,0 +1,106 @@
+/*
+ * WebGUI presentation contract.
+ * Selectors in this file must remain domain-neutral.
+ */
+
+.wg-button,
+.wg-input,
+.wg-select {
+  box-sizing: border-box;
+  min-height: var(--control-height);
+  font: inherit;
+  color: var(--control-fg);
+  background: var(--control-bg);
+  border: var(--border-width) solid var(--control-border);
+  border-radius: var(--radius-sm);
+}
+
+.wg-button {
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+}
+
+.wg-button:hover:not(:disabled) {
+  background: var(--control-bg-hover);
+}
+
+.wg-button[data-variant="primary"] {
+  color: var(--accent-fg);
+  background: var(--accent-bg);
+  border-color: var(--accent-bg);
+}
+
+.wg-input,
+.wg-select {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+}
+
+.wg-button:focus-visible,
+.wg-input:focus-visible,
+.wg-select:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.wg-button:disabled,
+.wg-input:disabled,
+.wg-select:disabled,
+[data-disabled="true"] {
+  opacity: var(--state-disabled-opacity);
+}
+
+.wg-field {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.wg-label {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.wg-panel {
+  color: var(--text-primary);
+  background: var(--surface-bg);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.wg-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.wg-stack {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.wg-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text-primary);
+}
+
+.wg-table th,
+.wg-table td {
+  padding: var(--space-3);
+  border-bottom: var(--border-width) solid var(--border-color);
+  text-align: left;
+}
+
+.wg-badge,
+.wg-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-sm);
+}
+
+.wg-status[data-status="success"] { color: var(--status-success); }
+.wg-status[data-status="warning"] { color: var(--status-warning); }
+.wg-status[data-status="error"] { color: var(--status-error); }
+.wg-status[data-status="info"] { color: var(--status-info); }

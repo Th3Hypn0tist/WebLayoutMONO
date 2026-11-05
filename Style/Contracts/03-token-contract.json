@@ -1,0 +1,19 @@
+{
+  "tokenGroups": [
+    "typography",
+    "spacing",
+    "radius",
+    "borders",
+    "controls",
+    "surfaces",
+    "text",
+    "status",
+    "focus",
+    "state"
+  ],
+  "rules": [
+    "component CSS uses semantic tokens instead of theme-specific literal values",
+    "dark and light themes implement the same semantic token names",
+    "a token name describes purpose, not a specific color value"
+  ]
+}

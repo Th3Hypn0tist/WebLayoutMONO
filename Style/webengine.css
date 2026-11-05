@@ -1,0 +1,83 @@
+/*
+ * WebEngine presentation contract.
+ * Selectors in this file describe application composition, never domain meaning.
+ */
+
+.we-shell {
+  min-height: 100vh;
+  margin: 0;
+  font-family: var(--font-family-ui);
+  line-height: var(--line-height-ui);
+  color: var(--text-primary);
+  background: var(--page-bg);
+}
+
+.we-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 3.5rem;
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-bg);
+  border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.we-main {
+  width: min(100%, var(--content-max-width));
+  margin-inline: auto;
+  padding: var(--space-6) var(--space-4);
+}
+
+.we-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.we-nav-item {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.we-nav-item:hover,
+.we-nav-item[aria-current="page"] {
+  color: var(--text-primary);
+}
+
+.we-page {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.we-section {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.we-projector {
+  min-width: 0;
+}
+
+.we-projector-header {
+  margin-bottom: var(--space-3);
+}
+
+.we-projector-body {
+  min-width: 0;
+}
+
+.we-projector[data-state="loading"] {
+  opacity: var(--state-loading-opacity);
+}
+
+.we-content {
+  color: var(--text-primary);
+}
+
+.we-content > :first-child {
+  margin-top: 0;
+}
+
+.we-content > :last-child {
+  margin-bottom: 0;
+}

@@ -1,0 +1,22 @@
+{
+  "namespaces": {
+    "WebGUI": ".wg-*",
+    "WebEngine": ".we-*"
+  },
+  "stateEncoding": {
+    "preferred": [
+      "data-state",
+      "data-status",
+      "data-variant",
+      "aria-current",
+      "native disabled state"
+    ],
+    "rule": "state is represented by semantic attributes when a dedicated structural class is unnecessary"
+  },
+  "rules": [
+    "Style consumes class and attribute semantics; it does not invent domain semantics",
+    "WebGUI owns primitive and component class semantics",
+    "WebEngine owns application and composition class semantics",
+    "domains compose the public contracts instead of creating a parallel shared design system"
+  ]
+}

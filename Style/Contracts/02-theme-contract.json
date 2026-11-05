@@ -1,0 +1,17 @@
+{
+  "themes": [
+    "dark",
+    "light"
+  ],
+  "selector": ":root[data-theme=<theme>]",
+  "default": "dark",
+  "themeOwns": [
+    "semantic token values"
+  ],
+  "themeMustNotOwn": [
+    "component structure",
+    "application structure",
+    "domain behavior"
+  ],
+  "rule": "dark and light share the same structural CSS; themes change semantic token values"
+}

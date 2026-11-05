@@ -1,0 +1,12 @@
+{
+  "package": "style-contracts",
+  "version": "0.1.0",
+  "files": [
+    "00-style-contract.json",
+    "01-presentation-contract.json",
+    "02-theme-contract.json",
+    "03-token-contract.json",
+    "manifest.json"
+  ],
+  "status": "active"
+}

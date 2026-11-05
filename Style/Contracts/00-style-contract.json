@@ -1,0 +1,23 @@
+{
+  "name": "Style",
+  "version": "0.1.0",
+  "kind": "shared visual contract",
+  "canonicalPublicEntry": "/style/style.css",
+  "consumes": [
+    "WebGUI presentation contract",
+    "WebEngine presentation contract"
+  ],
+  "owns": [
+    "semantic visual tokens",
+    "theme token values",
+    "visual implementation of WebGUI presentation semantics",
+    "visual implementation of WebEngine presentation semantics"
+  ],
+  "mustNot": [
+    "contain application logic",
+    "contain domain business semantics",
+    "depend on LMTS, IAM, Freemarket or another domain-specific DOM structure",
+    "redefine WebGUI or WebEngine behavior",
+    "use domain-specific selectors as part of the shared visual contract"
+  ]
+}
