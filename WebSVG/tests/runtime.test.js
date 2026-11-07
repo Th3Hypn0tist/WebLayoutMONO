@@ -174,7 +174,7 @@ test('rejects malformed binding records without silently inventing semantics', (
     binding_rules: [],
     relation_binding_rules: [],
   };
-  assert.throws(() => engine._indexBindings(), /binding\\.representation_ref is required/);
+  assert.throws(() => engine._indexBindings(), /representation_ref is required/);
 });
 
 test('does not index undeclared visual representations as semantic nodes', () => {
