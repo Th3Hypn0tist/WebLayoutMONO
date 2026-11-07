@@ -25,7 +25,7 @@
   padding: 0.55rem 0.7rem;
 }
 [data-ui='button']:hover { background: var(--ui-control-hover); }
-[data-ui='button']:focus-visible], [data-ui='input']:focus-visible], [data-ui='select']:focus-visible], [data-ui='textarea']:focus-visible {
+[data-ui='button']:focus-visible, [data-ui='input']:focus-visible, [data-ui='select']:focus-visible, [data-ui='textarea']:focus-visible {
   outline: 2px solid var(--ui-focus);
   outline-offset: 2px;
 }
