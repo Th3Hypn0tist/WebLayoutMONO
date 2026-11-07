@@ -1,0 +1,61 @@
+name: Web libraries independence
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  standalone:
+    name: Standalone ${{ matrix.package }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [WebEngine, WebGUI, WebSVG, S3D, Style]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Isolate selected package
+        shell: bash
+        env:
+          PKG: ${{ matrix.package }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/library-under-test"
+          cp -a "$PKG/." "$RUNNER_TEMP/library-under-test/"
+          rm -rf WebEngine WebGUI WebSVG S3D Style
+          mv "$RUNNER_TEMP/library-under-test" "$PKG"
+          for sibling in WebEngine WebGUI WebSVG S3D Style; do
+            if [[ "$sibling" != "$PKG" && -e "$sibling" ]]; then
+              echo "Sibling unexpectedly exists: $sibling" >&2
+              exit 1
+            fi
+          done
+      - name: Run package tests
+        shell: bash
+        env:
+          PKG: ${{ matrix.package }}
+        run: |
+          set -euo pipefail
+          if [[ "$PKG" == "Style" ]]; then
+            test -s Style/style.css
+            python - <<'PY'
+          from pathlib import Path
+          import re
+          for path in Path("Style").rglob("*.css"):
+              text=path.read_text(encoding="utf-8")
+              assert text.count("{")==text.count("}"), f"{path}: unbalanced braces"
+              for ref in re.findall(r'@import\s+["\x27](\.\/[^"\x27]+)["\x27]', text):
+                  assert (path.parent/ref).is_file(), f"{path}: missing CSS import {ref}"
+          PY
+          else
+            cd "$PKG"
+            node --test
+          fi
