@@ -15,8 +15,8 @@ class FakeElement {
   setAttribute(name, value) { this.attributes.set(name, String(value)); }
   removeAttribute(name) { this.attributes.delete(name); }
   matches(selector) {
-    const match = /^\\[([^\\]]+)\\]$/.exec(selector);
-    return match ? this.hasAttribute(match[1]) : false;
+    return selector.startsWith('[') && selector.endsWith(']')
+      && this.hasAttribute(selector.slice(1, -1));
   }
   querySelectorAll(selector) {
     return this.children.flatMap(child => [
